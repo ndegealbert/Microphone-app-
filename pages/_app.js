@@ -4,8 +4,9 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from './theme';
-import {Router }  from 'next/dist/client/router'
-
+import Router from 'next/router'
+import NProgress from "nprogress"
+import "nprogress/nprogress.css";
 
 
 //Material-Ui
@@ -17,13 +18,27 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 
-Router.event.on("RouterChangeStart" ,()=>{
+
+
+
+
+Router.events.on("routeChangeStart" ,()=>{
   console.log("On Start")
+  NProgress.start()
 })
 
-export default function MyApp(props) {
-  const { Component, pageProps } = props;
+Router.events.on("routeChangeComplete" ,()=>{
+  console.log("On Start Complete")
+  NProgress.done()
+})
+Router.events.on("routeChangeError" ,()=>{
+  console.log("On Error")
+  NProgress.done()
+})
 
+
+export default function MyApp({ Component, pageProps }) {
+ 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -39,7 +54,8 @@ export default function MyApp(props) {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
 
-      <AppBar position="fixed">
+    
+      <AppBar style={{ marginTop: 10 }}  position="fixed">
         <Toolbar variant="dense">
           <IconButton edge="start"  color="inherit" aria-label="menu">
             <MenuIcon />
@@ -50,6 +66,7 @@ export default function MyApp(props) {
           
         </Toolbar>
       </AppBar>
+     
 
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

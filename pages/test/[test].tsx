@@ -1,7 +1,11 @@
 
+const Testing = () => <p>This is about Next.js!</p>
 
-export  default function Test(){
-    return <h1> Hello  Word </h1>
-
+export async function getServerSideProps() {
+  await new Promise((resolve) => {
+    setTimeout(resolve, 500)
+  })
+  return { props: {} }
 }
 
+export default Testing
